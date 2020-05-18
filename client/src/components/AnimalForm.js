@@ -1,15 +1,9 @@
 import React, { useState } from 'react'
+import { withFormik } from 'formik'
 
-const AnimalForm = () => {
-  const [animal, setAnimal] = useState({ species: '' })
-
-  const handleChange = event => {
-    setAnimal({ ...animal, [event.target.name]: event.target.value })
-  }
-
+const AnimalForm = props => {
   const handleSubmit = event => {
     event.preventDefault()
-    console.log('species: ', animal.species)
   }
 
   return (
@@ -17,7 +11,21 @@ const AnimalForm = () => {
       <form onSubmit={handleSubmit}>
         <label>
           Species:
-          <input type='text' name='species' onChange={handleChange} />
+          <input
+            type='text'
+            name='species'
+            value={props.values.species}
+            onChange={props.handleChange}
+          />
+        </label>
+        <label>
+          Size:
+          <input
+            type='text'
+            name='size'
+            value={props.values.size}
+            onChange={props.handleChange}
+          />
         </label>
         <button type='button'>Anything!</button>
       </form>
@@ -25,4 +33,9 @@ const AnimalForm = () => {
   )
 }
 
-export default AnimalForm
+export default withFormik({
+  mapPropsToValues: props => ({
+    species: props.species || '',
+    size: '',
+  }),
+})(AnimalForm)
